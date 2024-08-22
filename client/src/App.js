@@ -28,8 +28,20 @@ function App() {
             });
     };
 
+    const handleDelete = (id) => {
+        console.log(`Delete comment with id: ${id}`);
+        axios.delete(`http://localhost:5000/api/comments/${id}`)
+            .then(() => {
+                setComments(comments.filter(comment => comment._id !== id));
+            })
+            .catch((error) => {
+                console.error('There was an error deleting the comment!', error);
+            });
+    };
+
     return (
         <div className="App">
+            <h3>Tell us your thoughts!!</h3>
             <form onSubmit={handleSubmit} className="comment-form">
                 <textarea
                     value={content}
@@ -44,6 +56,9 @@ function App() {
                     <div key={comment._id} className="comment">
                         <p>{comment.content}</p>
                         <small>{new Date(comment.date).toLocaleString()}</small>
+                        <button onClick={() => handleDelete(comment._id)} className="delete-button">
+                            Delete
+                        </button>
                     </div>
                 ))}
             </div>

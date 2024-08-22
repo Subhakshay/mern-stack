@@ -54,3 +54,14 @@ app.get('/api/comments', async (req, res) => {
     }
 });
 
+//Delete comment
+app.delete('/api/comments/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedComment = await Comment.findByIdAndDelete(id);
+        if (!deletedComment) return res.status(404).json({ message: 'Comment not found' });
+        res.json({ message: 'Comment deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+});
